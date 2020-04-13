@@ -3,6 +3,7 @@ package com.burak.rentcloud.profileservice.controller;
 import com.burak.rentcloud.commons.model.Customer;
 import com.burak.rentcloud.profileservice.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class ProfileController {
     CustomerService customerService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('create_profile')")
     public Customer save(@RequestBody Customer customer) {
         return customerService.save(customer);
     }
@@ -30,6 +32,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/profiles", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_operator')")
     public List<Customer> fetch() {
         return customerService.fetchAllProfiles();
     }
